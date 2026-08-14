@@ -3,91 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0f1c22" />
-  <title>Driftwood — Survival Prototype</title>
+  <meta name="theme-color" content="#0d0d0f" />
+  <title>Driftwood — Stage I</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <main id="app">
-    <canvas id="game" aria-label="Driftwood survival game"></canvas>
+<main id="app">
+  <canvas id="game" aria-label="Driftwood survival game"></canvas>
 
-    <section id="hud" class="hud hidden" aria-live="polite">
-      <div class="hud-top">
-        <div class="brand-lockup">
-          <span class="eyebrow">DRIFTWOOD</span>
-          <strong id="phaseLabel">DAY 1</strong>
-          <span id="clockLabel">Dawn</span>
+  <section id="hud" class="hud hidden">
+    <div class="hud-top">
+      <div class="brand-lockup"><span class="eyebrow">DRIFTWOOD</span><strong id="phaseLabel">DAY 1</strong><span id="clockLabel">Dawn</span></div>
+      <div class="meters">
+        <div class="meter-row"><span>HP</span><div class="meter hp"><i id="healthBar"></i></div><b id="healthText">100/100</b></div>
+        <div class="meter-row"><span>INF</span><div class="meter inf"><i id="infectionBar"></i></div><b id="infectionText">0%</b></div>
+        <div class="meter-row"><span id="powerName">FAITH</span><div class="meter mana"><i id="powerBar"></i></div><b id="powerText">100/100</b></div>
+      </div>
+    </div>
+
+    <div class="resource-strip">
+      <div>🪵 <b id="woodCount">0</b><small>WOOD</small></div>
+      <div>🌿 <b id="herbCount">0</b><small>HERBS</small></div>
+      <div>✦ <b id="crystalCount">0</b><small>CRYSTAL</small></div>
+      <div>☠ <b id="killCount">0</b><small>KILLS</small></div>
+    </div>
+    <div class="quick-stats"><span>DMG <b id="damageStat">0</b></span><span>ARM <b id="armorStat">0</b></span><button id="inventoryBtn"><kbd>I</kbd> INVENTORY</button></div>
+
+    <div class="buildbar">
+      <button data-build="barricade"><kbd>1</kbd><span>Barricade</span><small>4 wood</small></button>
+      <button data-build="campfire"><kbd>2</kbd><span>Campfire</span><small>8 wood</small></button>
+      <button data-build="ward"><kbd>3</kbd><span>Ward</span><small>6 wood + 2 herb</small></button>
+    </div>
+    <div class="abilitybar">
+      <div><kbd>CLICK</kbd><span>Attack</span></div>
+      <div><kbd>Q</kbd><span id="abilityQ">Smite</span></div>
+      <div><kbd>R</kbd><span id="abilityR">Cleanse</span></div>
+      <button id="healthPotionBtn" class="potion red"><kbd>4</kbd><span>Health</span><b id="healthPotionCount">2</b></button>
+      <button id="manaPotionBtn" class="potion blue"><kbd>5</kbd><span id="manaPotionLabel">Faith</span><b id="manaPotionCount">2</b></button>
+    </div>
+    <div id="objective" class="objective">Gather. Build. Survive.</div>
+    <div id="message" class="message"></div>
+  </section>
+
+  <section id="inventoryPanel" class="inventory-panel hidden">
+    <div class="inventory-window">
+      <header><div><p class="eyebrow">CHARACTER</p><h2 id="characterNameLabel">Wanderer</h2><span id="characterClassLabel">Holy Warden</span></div><button id="closeInventoryBtn" class="close-btn">×</button></header>
+      <div class="inventory-main">
+        <div class="paperdoll">
+          <div id="paperDollPreview" class="paper-preview"></div>
+          <button data-gear-slot="helm" class="gear-slot helm"><small>HEAD</small><strong>Empty</strong></button>
+          <button data-gear-slot="weapon" class="gear-slot weapon"><small>WEAPON</small><strong>Empty</strong></button>
+          <button data-gear-slot="chest" class="gear-slot chest"><small>CHEST</small><strong>Empty</strong></button>
+          <button data-gear-slot="boots" class="gear-slot boots"><small>BOOTS</small><strong>Empty</strong></button>
+          <button data-gear-slot="charm" class="gear-slot charm"><small>CHARM</small><strong>Empty</strong></button>
         </div>
-        <div class="meters">
-          <div class="meter-row"><span>HP</span><div class="meter"><i id="healthBar"></i></div><b id="healthText">100</b></div>
-          <div class="meter-row"><span>INF</span><div class="meter infection"><i id="infectionBar"></i></div><b id="infectionText">0%</b></div>
-          <div class="meter-row"><span id="powerName">FAITH</span><div class="meter power"><i id="powerBar"></i></div><b id="powerText">100</b></div>
+        <aside class="stat-sheet">
+          <p class="eyebrow">COMBAT</p>
+          <div><span>Damage</span><b id="sheetDamage">0</b></div><div><span>Armor</span><b id="sheetArmor">0</b></div>
+          <div><span>Maximum Life</span><b id="sheetHealth">100</b></div><div><span id="sheetPowerName">Maximum Faith</span><b id="sheetPower">100</b></div>
+          <div><span>Power Regen</span><b id="sheetRegen">0</b></div>
+          <p class="inventory-hint">Click backpack gear to equip it. Click worn gear to return it to your pack. The game pauses while this screen is open.</p>
+        </aside>
+      </div>
+      <div class="backpack-head"><div><p class="eyebrow">BACKPACK</p><strong id="backpackCount">0 / 12</strong></div><span>Enemy drops improve as nights get harder.</span></div>
+      <div id="backpackList" class="backpack"></div>
+    </div>
+  </section>
+
+  <section id="startScreen" class="overlay">
+    <div class="panel creator-panel">
+      <p class="eyebrow">STAGE I — THE WANDERER</p>
+      <h1>DRIFTWOOD</h1>
+      <p class="lede">A dark survival RPG: customize a wanderer, build before nightfall, and hunt the fog for better gear.</p>
+      <div class="creator-layout">
+        <div class="creator-card">
+          <div id="creatorPreview" class="creator-preview"></div>
+          <label>NAME<input id="characterNameInput" maxlength="18" value="Wanderer" /></label>
+          <div class="custom-row"><span>SKIN</span><div id="skinOptions" class="swatches"></div></div>
+          <div class="custom-row"><span>HAIR</span><div id="hairOptions" class="swatches"></div></div>
+          <div class="custom-row"><span>OUTFIT</span><div id="outfitOptions" class="swatches"></div></div>
+          <button id="hairStyleBtn" class="secondary">HAIR: CROPPED</button>
+        </div>
+        <div class="class-select">
+          <p class="eyebrow">CHOOSE A PATH</p>
+          <button class="class-card selected" data-class="holy"><span>✢</span><strong>HOLY WARDEN</strong><p>Durable. Smite the infected and purge disease with faith.</p><small>Q — Smite · R — Cleanse</small></button>
+          <button class="class-card" data-class="mage"><span>✦</span><strong>ARCANE MAGE</strong><p>Ranged burst. Spend mana to control enemies before they reach camp.</p><small>Q — Arcane Volley · R — Frost Nova</small></button>
+          <button id="beginBtn" class="primary">ENTER THE SHORE</button>
         </div>
       </div>
+      <div class="how-to"><span><kbd>WASD</kbd> move</span><span><kbd>E</kbd> harvest / loot</span><span><kbd>1 2 3</kbd> build</span><span><kbd>4 5</kbd> potions</span><span><kbd>I</kbd> inventory</span><span><kbd>MOUSE</kbd> aim + attack</span></div>
+    </div>
+  </section>
 
-      <div class="inventory">
-        <div><span>🪵</span><b id="woodCount">0</b><small>WOOD</small></div>
-        <div><span>🌿</span><b id="herbCount">0</b><small>HERBS</small></div>
-        <div><span>✦</span><b id="crystalCount">0</b><small>CRYSTAL</small></div>
-        <div><span>☠</span><b id="killCount">0</b><small>KILLS</small></div>
-      </div>
-
-      <div class="buildbar">
-        <button data-build="barricade"><kbd>1</kbd><span>Barricade</span><small>4 wood</small></button>
-        <button data-build="campfire"><kbd>2</kbd><span>Campfire</span><small>8 wood</small></button>
-        <button data-build="ward"><kbd>3</kbd><span>Ward</span><small>6 wood + 2 herb</small></button>
-      </div>
-
-      <div class="abilitybar">
-        <div><kbd>CLICK</kbd><span>Attack</span></div>
-        <div><kbd>Q</kbd><span id="abilityQ">Smite</span></div>
-        <div><kbd>R</kbd><span id="abilityR">Cleanse</span></div>
-        <div><kbd>E</kbd><span>Harvest</span></div>
-      </div>
-
-      <div id="objective" class="objective">Gather enough wood to survive the first night.</div>
-      <div id="message" class="message"></div>
-    </section>
-
-    <section id="startScreen" class="overlay">
-      <div class="panel hero-panel">
-        <p class="eyebrow">A SURVIVAL PROTOTYPE</p>
-        <h1>DRIFTWOOD</h1>
-        <p class="lede">The shore is sick. Daylight is borrowed. Build before dusk, survive what crawls from the fog, and decide what kind of power you are willing to become.</p>
-
-        <div class="class-grid">
-          <button class="class-card" data-class="holy">
-            <span class="sigil">✢</span>
-            <strong>HOLY WARDEN</strong>
-            <p>Durable survivor. Smite enemies and purge infection with faith.</p>
-            <small>Q — Smite · R — Cleanse</small>
-          </button>
-          <button class="class-card" data-class="mage">
-            <span class="sigil">✦</span>
-            <strong>ARCANE MAGE</strong>
-            <p>High burst damage. Arcane bolt and frost nova keep the horde away.</p>
-            <small>Q — Arcane Bolt · R — Frost Nova</small>
-          </button>
-        </div>
-
-        <div class="how-to">
-          <span><kbd>WASD</kbd> Move</span>
-          <span><kbd>E</kbd> Harvest</span>
-          <span><kbd>1 2 3</kbd> Build</span>
-          <span><kbd>MOUSE</kbd> Aim + attack</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="deathScreen" class="overlay hidden">
-      <div class="panel death-panel">
-        <p class="eyebrow">THE FOG CLAIMED YOU</p>
-        <h2 id="deathTitle">You survived 0 nights.</h2>
-        <p id="deathStats"></p>
-        <button id="restartBtn" class="primary">RETURN TO SHORE</button>
-      </div>
-    </section>
-  </main>
-  <script src="./game.js"></script>
+  <section id="deathScreen" class="overlay hidden"><div class="panel death-panel"><p class="eyebrow">THE FOG CLAIMED YOU</p><h2 id="deathTitle">You survived 0 nights.</h2><p id="deathStats"></p><button id="restartBtn" class="primary">RETURN TO CHARACTER CAMP</button></div></section>
+</main>
+<script src="./game.js"></script>
 </body>
 </html>
