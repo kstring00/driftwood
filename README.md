@@ -1,43 +1,45 @@
 # Driftwood
 
-A browser-based top-down survival prototype built around gathering, fortification, night raids, disease, and supernatural class powers.
+A dark browser survival RPG built in playable stages.
 
-## Current playable loop
+## Stage I — The Wanderer
 
-- Gather **wood**, **herbs**, and **arcane crystals** during the day.
-- Build **barricades**, **campfires**, and **wards**.
-- Survive increasingly dangerous enemy waves at night.
-- Manage an **infection** system. Rotters spread disease; campfires and Holy Warden abilities can suppress it.
-- Choose one of two starting archetypes:
-  - **Holy Warden** — Smite + Cleanse
-  - **Arcane Mage** — Arcane Bolt + Frost Nova
-- Enemy roster grows as the days pass: Drowned, Rotters, and Wraiths.
+The current build combines the original survival loop with the first RPG progression layer:
+
+- Customize character name, skin, hair, hair style, and outfit
+- Choose Holy Warden or Arcane Mage
+- Gather wood, herbs, and arcane crystal during the day
+- Build barricades, campfires, and wards before night
+- Survive Drowned, Rotters, and Wraiths
+- Manage infection
+- Use health and class-power potions
+- Collect enemy gear drops and equip upgrades
+- Equipment slots: weapon, head, chest, boots, charm
+- Loot rarities: Common, Enchanted, Rare, Relic
+- Gear modifies damage, armor, max life, max power, regen, and movement
 
 ## Controls
 
-| Control | Action |
+| Input | Action |
 |---|---|
-| WASD / Arrow keys | Move |
+| `WASD` / arrows | Move |
 | Mouse | Aim |
 | Left click | Attack / place selected building |
-| E | Harvest nearby resource |
-| Q | Class attack |
-| R | Class utility power |
-| 1 | Barricade |
-| 2 | Campfire |
-| 3 | Ward |
-| Esc | Cancel build mode |
+| `E` | Harvest nearby resource or pick up nearby loot |
+| `1` | Barricade |
+| `2` | Campfire |
+| `3` | Ward |
+| `4` | Health potion |
+| `5` | Faith/Mana potion |
+| `Q` | Class attack |
+| `R` | Class utility ability |
+| `I` | Character + inventory |
+| `Esc` | Cancel build / close inventory |
 
-## Run locally
+## Development rule
 
-This prototype has no build step. Serve the directory with any static server, for example:
+Driftwood is intentionally built as vertical slices rather than adding every system at once. See `ROADMAP.md` for the staged plan.
 
-```bash
-python3 -m http.server 8080
-```
+## Deployment
 
-Then open `http://localhost:8080`.
-
-## Roadmap
-
-The prototype is intentionally small enough to iterate quickly. Strong next systems include procedural islands, inventory/crafting UI, shelter interiors, disease types with unique cures, skill trees, bosses, saving, loot, multiplayer, and deeper Holy/Mage specializations.
+The repository is linked to Vercel. Updates to `main` deploy automatically.
